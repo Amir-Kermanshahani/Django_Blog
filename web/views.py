@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from .forms import ContactForm
+from blog.models import Post, Category
+
 
 def index(request):
-	return render(request, 'web/index.html')
+
+	categories = Category.objects.all()
+	posts = Post.objects.all()
+	posts = Post.objects.filter(Active=1)
+	posts = Post.objects.order_by('-created_time')[:6]
+
+	return render(request, 'web/index.html', {'recent_posts':posts, 'categories':categories})
 
 
 def contact(request):
